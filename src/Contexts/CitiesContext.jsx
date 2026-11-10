@@ -1,12 +1,8 @@
 import {
   createContext,
   useReducer,
-  useEffect,
   useContext,
-  useCallback,
 } from "react";
-
-const BASE_URL = "http://localhost:9000/";
 
 const CitiesContext = createContext();
 
@@ -52,74 +48,18 @@ function CitiesProvider({ children }) {
     initialStates,
   );
 
-  useEffect(function () {
-    async function fetchCities() {
-      dispatch({ type: "loading" });
-      try {
-        const res = await fetch(`${BASE_URL}cities`);
-        const data = await res.json();
-        dispatch({ type: "cities/loaded", payload: data });
-      } catch {
-        dispatch({
-          type: "rejected",
-          payload: "There was an error fetching the cities",
-        });
-      }
-    }
-    fetchCities();
-  }, []);
-
-  const getCity = useCallback(
-    async function getCity(id) {
-      if (Number(id) === currentCity.id) return;
-      dispatch({ type: "loading" });
-      try {
-        const res = await fetch(`${BASE_URL}cities/${id}`);
-        const data = await res.json();
-        dispatch({ type: "city/loaded", payload: data });
-      } catch {
-        dispatch({
-          type: "rejected",
-          payload: "There was an error fetching the city",
-        });
-      }
-    },
-    [currentCity.id],
-  );
-
-  async function createCity(newCity) {
-    dispatch({ type: "loading" });
-    try {
-      const res = await fetch(`${BASE_URL}cities/`, {
-        method: "POST",
-        body: JSON.stringify(newCity),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await res.json();
-      dispatch({ type: "city/created", payload: data });
-    } catch {
-      dispatch({
-        type: "rejected",
-        payload: "There was an error creating the cty",
-      });
-    }
+  function getCity(id) {
+    const city = cities.find((city) => city.id === Number(id));
+    if (city) dispatch({ type: "city/loaded", payload: city });
   }
 
-  async function deleteCity(id) {
-    dispatch({ type: "loading" });
-    try {
-      await fetch(`${BASE_URL}cities/${id}`, {
-        method: "DELETE",
-      });
-      dispatch({ type: "city/deleted", payload: id });
-    } catch {
-      dispatch({
-        type: "rejected",
-        payload: "There was an error deleting the city",
-      });
-    }
+  function createCity(newCity) {
+    const city = { ...newCity, id: Date.now() };
+    dispatch({ type: "city/created", payload: city });
+  }
+
+  function deleteCity(id) {
+    dispatch({ type: "city/deleted", payload: id });
   }
 
   return (

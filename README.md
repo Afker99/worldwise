@@ -23,17 +23,13 @@ Install the dependencies:
 npm install
 ```
 
-Start the JSON Server API and the Vite development server in separate terminals:
-
-```bash
-npm run server
-```
+Start the Vite development server:
 
 ```bash
 npm run dev
 ```
 
-Open the local URL printed by Vite (usually `http://localhost:5173`). The API runs at `http://localhost:9000` and reads and writes city records in `data/cities.json`.
+Open the local URL printed by Vite (usually `http://localhost:5173`). The city list starts empty. Cities added during a session are kept in memory and are cleared when the page reloads.
 
 ## Demo login
 
@@ -49,7 +45,6 @@ Authentication is not persistent and is not intended for production use.
 | Command | Description |
 | --- | --- |
 | `npm run dev` | Start the Vite development server |
-| `npm run server` | Start JSON Server on port 9000 with a 500 ms response delay |
 | `npm run build` | Create a production build in `dist/` |
 | `npm run preview` | Preview the production build locally |
 | `npm run lint` | Run ESLint |
@@ -65,11 +60,10 @@ Authentication is not persistent and is not intended for production use.
 ## Project structure
 
 ```text
-data/                 Local JSON Server data
 public/               Static images and icons
 src/
   components/         Reusable UI and map components
-  Contexts/           City data and demo authentication state
+  Contexts/           In-memory city data and demo authentication state
   hooks/              Geolocation and map-position hooks
   pages/              Homepage, login, pricing, and app pages
 ```
