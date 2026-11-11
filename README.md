@@ -9,7 +9,6 @@ WorldWise is a travel journal built with React. View an interactive map, add cit
 - View city details, dates, notes, and countries
 - Geolocation support for finding your current position
 - Client-side routing with protected app pages
-- Local JSON Server API for city data
 
 ## Requirements
 
